@@ -12,7 +12,7 @@ ServerName = sys.argv[1]
 ServerPort = int(sys.argv[2])
 ServerAddress = (ServerName, ServerPort)
 
-time_window = sys.argv[3] #elapsed in seconds, [0] is prog name
+time_window = float(sys.argv[3]) #elapsed in seconds, [0] is prog name
 
 
 #Create client socket
