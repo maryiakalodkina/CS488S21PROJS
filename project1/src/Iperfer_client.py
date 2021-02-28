@@ -39,7 +39,7 @@ while 1:
 
 mb = count/1000
 rate = mb/time_window
-print('Sent = {count} KB'.format(count), end='     ')
-print('Rate = {rate}'.format(rate))
+print('The total number of bytes sent (in kilobytes) = {count}'.format(count), end=' ')
+print('The rate at which traffic could be sent (in megabits per second (Mbps)) = {rate}'.format(rate))
 
  
