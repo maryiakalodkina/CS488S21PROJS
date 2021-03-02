@@ -16,34 +16,40 @@ time_window = float(sys.argv[3]) #elapsed in seconds, [0] is prog name
 
 clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 clientSocket.connect(ServerAddress)
+
 #Create client socket
-#with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket: #IPv4$
-    #Ask for connection to server, attach the socket directly to the remote ad$
-    # clientSocket.connect(ServerAddress)
+#with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket: #IP #Ask for connection to server, attach the socket directly to the remote ad$
+ #   clientSocket.connect(ServerAddress)
     #set time out
-   # clientSocket.settimeout(time_window)
-#3-way handshake is performed => connection is established
+
 clientSocket.settimeout(time_window)
+
+#3-way handshake is performed => connection is established
+#clientSocket.settimeout(time_window)
 #clientSocket = socket.create_connection(ServerAddress, timeout=time_window)
-starttime = time.time()
+start_time = time.time()
 count = 0 #in KB
-while 1: #and not socket.timeout:
+while (time.time() - start_time) < time_window:
+	 #and not socket.timeout:
     try:
         #left-justify=padding message uwith fixed size '0'
-        message = '0'
+	#clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	#clientSocket.connect(ServerAddress)
+	message = '0'
         message = message.ljust(1000, '0')
         count += 1
         #Send message
-        clientSocket.sendall(message.encode('utf-8')) #change ascii?
-
+        clientSocket.send(message.encode('utf-8')) #change ascii?
+#    	if (now - start_time) >= time_window:
+#		clientSocket.close()
+ 
     #modified_sent = clientSocket.recvfrom(1000)
     except socket.timeout as e:
-        break
-    if socket.timeout > 0 and time.time() - starttime >= socket.timeout:      $
-        clientSocket.close()
-
+        break	
+clientSocket.close()
+     
 mb = count/1000
 rate = mb/time_window
-
-print('Sent = {count} KB. Rate = {rate}'.format(count, rate))
+#print(str(count) + '\n')
+print('Sent = {} KB. Rate = {} Mbps'.format(count, rate))
 
