@@ -18,38 +18,31 @@ clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 clientSocket.connect(ServerAddress)
 
 #Create client socket
-#with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket: #IP #Ask for connection to server, attach the socket directly to the remote ad$
- #   clientSocket.connect(ServerAddress)
-    #set time out
 
 clientSocket.settimeout(time_window)
 
 #3-way handshake is performed => connection is established
-#clientSocket.settimeout(time_window)
-#clientSocket = socket.create_connection(ServerAddress, timeout=time_window)
 start_time = time.time()
 count = 0 #in KB
 while (time.time() - start_time) < time_window:
-	 #and not socket.timeout:
     try:
         #left-justify=padding message uwith fixed size '0'
 	#clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	#clientSocket.connect(ServerAddress)
 	message = '0'
-        message = message.ljust(1000, '0')
-        count += 1
-        #Send message
-        clientSocket.send(message.encode('utf-8')) #change ascii?
-#    	if (now - start_time) >= time_window:
-#		clientSocket.close()
- 
-    #modified_sent = clientSocket.recvfrom(1000)
+        message = message.ljust(1000, '0')	
+	#count += 1 #this count = 1
+	while (time.time() - start_time) < time_window:
+	   count += 1
+       	   clientSocket.sendall(message.encode('utf-8')) #change ascii?
+ 	#clientSocket.close() 
     except socket.timeout as e:
         break	
 clientSocket.close()
      
-mb = count/1000
-rate = mb/time_window
-#print(str(count) + '\n')
+megabit = count*0.0078125
+#print("count: {}".format(count))
+rate = megabit/time_window
+#print("time_window: {}".format(time_window))
 print('Sent = {} KB. Rate = {} Mbps'.format(count, rate))
 
