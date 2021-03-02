@@ -1,30 +1,33 @@
 
 import socket
 import sys
-import timeit
+import time
 import argparse
 
-if len(sys.argv) > 3 or len(sys.argv) < 3:
-    sys.exit('Error: missing or additional arguments')
-if int(sys.argv[3]) < 1024 or int(sys.argv[3]) > 65535:
-    sys.exit('Error: port number must be in the range 1024 to 65535')
-
+#To find out in which mode to run
 #Credit: https://docs.python.org/2/library/argparse.html#action 
 parser = argparse.ArgumentParser()
-parser.add_argument('-s', action='store_true')
+parser.add_argument('-s')
 flag = parser.parse_args()
 if flag.s:
     pass
     #Iperfer should operate in server mode
+
+    #python3 Iperfer.py -s <listen port>
+
+    if len(sys.argv) > 3 or len(sys.argv) < 3:
+        sys.exit('Error: missing or additional arguments')
+    if int(sys.argv[3]) < 1024 or int(sys.argv[3]) > 65535:
+        sys.exit('Error: port number must be in the range 1024 to 65535')
+
+     #....
+
 else:
     pass
     #Iperfer should operate in client mode
 
-
-#Server code
-
 #Creating server
-ServerName = 'localhost'
+ServerName = 'Iperfer_server'
 ServerPort = int(sys.argv[3])
 ServerAddress = (ServerName, ServerPort)
 
@@ -44,24 +47,24 @@ connection_socket, addr = serverSocket.accept()
 
 count = 0 #in KB
 
+start_time = time.time()
 while 1:
-    try:
-        #Receiving message from client
-        message = connection_socket.resv(1000)
+    #Receiving message from client
+    message = connection_socket.resv(1000)
 
-        #Modifying the message
-        modified_message = message.replace('0', '1')
-        count+=1
+    #Modifying the message
+    modified_message = message.replace('0', '1')
+    count+=1
 
-        #Sending the modified message
-        modified_socket.send(modified_message)
-    
-        print("Reply sent", addr)
+    #Sending the modified message
+    modified_socket.send(modified_message)
+    print("Reply sent", addr)
 
+stop_time = time.time() - start_time
 mb = count/1000
-rate = mb/time_window
-print('The total number of bytes received (in kilobytes) = {count}'.format(count), end=' ')
-print('The rate at which traffic could be read (in megabits per second (Mbps)) = {rate}'.format(rate))
+rate = mb/stop_time
+
+print('Sent = {count} KB. Rate = {rate}'.format(count, rate))
 
 #Closing communication with client
 connection_socket.close()
