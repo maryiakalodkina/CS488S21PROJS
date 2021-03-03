@@ -69,7 +69,8 @@ if sys.argv[1] == "-s":
      
 
 elif sys.argv[1] == "-c":
-    
+
+
     if len(sys.argv) > 4 or len(sys.argv) < 4:
         sys.exit('Error: missing or additional arguments')
     if int(sys.argv[2]) < 1024 or int(sys.argv[2]) > 65535:
@@ -95,15 +96,11 @@ elif sys.argv[1] == "-c":
     while (time.time() - start_time) < time_window:
         try:
             #left-justify=padding message uwith fixed size '0'
-	    #clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	    #clientSocket.connect(ServerAddress)
 	    message = '0'
             message = message.ljust(1000, '0')	
-	    #count += 1 #this count = 1
 	    while (time.time() - start_time) < time_window:
 	       count += 1
        	       clientSocket.sendall(message.encode('utf-8')) #change ascii?
- 	    #clientSocket.close() 
         except socket.timeout as e:
             break	
     clientSocket.close()
