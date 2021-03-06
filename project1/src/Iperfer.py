@@ -38,17 +38,15 @@ if sys.argv[1] == "-s":
       start_time = time.time()
 
         #Receiving message from client
-      message = bytearray(connection_socket.recv(1000))
-      if message[0] != 2:
-        message[0] = 1
-        #Modifying the message
+      message = connection_socket.recv(1000)
+      if message[0] == 0:
         count+=1000
-      else:
+      elif message[0] == 69:
         break
 
   #Sending the modified message
       connection_socket.send(message)
-      print("Reply sent", addr)
+#      print("Reply sent", addr)
        
         #Closing communication with client
       connection_socket.close()
@@ -89,34 +87,26 @@ else:
     count = 0 #in KB
 
     while (time.time() - start_time) < time_window:
+      size = 1000
+      message = bytearray(size)
+
       try:
-        size = 1000
-        message = bytearray(size)
+        clientSocket.sendall(message)
+        count += 1000
+      except:
+        clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        clientSocket.connect(ServerAddress)
+        clientSocket.sendall(message)
+        count += 1000
 
-#        while (time.time() - start_time) < time_window:
-#          count += 1000
-        try:
-          clientSocket.sendall(message)
-          count += 1000
-        except:
-          clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-          clientSocket.connect(ServerAddress)
-          clientSocket.sendall(message)
-          count += 1000
-
-     #   clientSocket.connect(ServerAddress)
-      except socket.timeout as e:
-        break
-#    clientSocket.close()
-    array = [2, 10]
-    messageEOF = bytearray(array)
-    clientSocket.sendall(messageEOF)
+    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    clientSocket.connect(ServerAddress)
+    messageEOF = 'E'
+    clientSocket.send(messageEOF.encode('ascii'))
 
     clientSocket.close()   
     megabit = count*0.000008
     count = count/1000
-#print("count: {}".format(count))
     rate = megabit/time_window
-#print("time_window: {}".format(time_window))
     print('sent = {} KB. rate = {} Mbps'.format(count, rate))
 
