@@ -37,20 +37,21 @@ if sys.argv[1] == "-s":
     while 1:
       connection_socket, addr = serverSocket.accept()  #move to while-lo$
       #start_time2 = time.time()
-
+      while 1:
         #Receiving message from client
-      message = connection_socket.recv(1000)
-      Scount+=1000
-      if message[0] == 69:
+        message = connection_socket.recv(1000)
+      
+      #Scount+=1000
+        if message[0] == 69:
         #connection_socket.close()
-        stop_time2 = time.time()-start_time2
-        connection_socket.close()
+          stop_time2 = time.time()-start_time2
+          connection_socket.close()
         #print(stop_time2)
-        break
-      Scount+=1000
-       
+          break
+        Scount+=1000
+      break
         #Closing communication with client
-      connection_socket.close()
+     # connection_socket.close()
    # print(stop_time2)
     #stop_time2 = time.time() - start_time2
     print('Count: {} and StopTime: {}'.format(Scount, stop_time2))
@@ -87,9 +88,9 @@ else:
 #3-way handshake is performed => connection is established
 
     start_time = time.time()
-    count = 0 #in KB
+    count = 0 #in B
 
-    while (time.time()-start_time) <= time_window:
+    while (time.time()-start_time) < time_window:
 #      print('Time: {}'.format(clientSocket.settimeout))
  
       size = 1000 
@@ -98,18 +99,20 @@ else:
       try:
         clientSocket.sendall(message)
         count += 1000
-      except:
-        clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        clientSocket.connect(ServerAddress)
-        clientSocket.sendall(message)
-        count += 1000
+      except clientSocket.timeout as e:
+        break
+        
+      #  clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      #  clientSocket.connect(ServerAddress)
+      #  clientSocket.sendall(message)
+      #  count += 1000
  
-    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    clientSocket.connect(ServerAddress)
+   # clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+   # clientSocket.connect(ServerAddress)
     messageEOF = 'E'
     clientSocket.send(messageEOF.encode('ascii'))
 
-    clientSocket.close()   
+  #  clientSocket.close()   
     print(count)
     megabit = count*0.000008
     count = count/1000
