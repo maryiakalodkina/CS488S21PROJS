@@ -26,11 +26,11 @@ count = 0 #in KB
 
 while (time.time() - start_time) < time_window:
     try:
-        size = 1000
-	message = bytearray(size)
-	while (time.time() - start_time) < time_window:
-           count += 1
-           clientSocket.sendall(message)
+      size = 1000
+      message = bytearray(size)
+      while (time.time() - start_time) < time_window:
+        count += 1
+        clientSocket.sendall(message)
     except socket.timeout as e:
         break 
 clientSocket.close() 
