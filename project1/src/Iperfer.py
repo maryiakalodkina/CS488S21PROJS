@@ -1,14 +1,6 @@
 import socket
 import sys
 import time
-#import argparse
-
-#To find out in which mode to run
-#Credit: https://docs.python.org/2/library/argparse.html#action
-#parser = argparse.ArgumentParser()
-#parser.add_argument('-s')
-#flag = parser.parse_args()
-#if flag.s:
 
 if sys.argv[1] == "-s":
     #pass
@@ -40,35 +32,34 @@ if sys.argv[1] == "-s":
     #Creating connection socket
     #It is blocked and don't go to while-loop if no one connects
     count = 0 #in KB
-
+    #connection_socket, addr = serverSocket.accept()
     while 1:
       connection_socket, addr = serverSocket.accept()  #move to while-lo$
       start_time = time.time()
 
         #Receiving message from client
-      message = connection_socket.recv(1000)
-
-      for value in message:
-        value = 1
-        
+      message = bytearray(connection_socket.recv(1000))
+      if message[0] != 2:
+        message[0] = 1
         #Modifying the message
-#      modified_message = message.replace('0', '1')
-      count+=1000
+        count+=1000
+      else:
+        break
 
   #Sending the modified message
       connection_socket.send(message)
       print("Reply sent", addr)
-
+       
         #Closing communication with client
       connection_socket.close()
-
+#    serverSocket.close()
     stop_time = time.time() - start_time
 
     megabit = count*0.000008
     #print("count: {}".format(count))
     rate = megabit/stop_time
     #print("time_window: {}".format(time_window))
-    print('sent = {} KB. rate = {} Mbps'.format(count, rate))
+    print('received = {} KB. rate = {} Mbps'.format(count, rate))
 
 else:
 
@@ -104,11 +95,24 @@ else:
 
 #        while (time.time() - start_time) < time_window:
 #          count += 1000
-        clientSocket.sendall(message)
-        count += 1000
+        try:
+          clientSocket.sendall(message)
+          count += 1000
+        except:
+          clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+          clientSocket.connect(ServerAddress)
+          clientSocket.sendall(message)
+          count += 1000
+
+     #   clientSocket.connect(ServerAddress)
       except socket.timeout as e:
         break
-    clientSocket.close()
+#    clientSocket.close()
+    array = [2, 10]
+    messageEOF = bytearray(array)
+    clientSocket.sendall(messageEOF)
+
+    clientSocket.close()   
     megabit = count*0.000008
     count = count/1000
 #print("count: {}".format(count))
