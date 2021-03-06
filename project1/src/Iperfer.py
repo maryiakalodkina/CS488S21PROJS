@@ -68,10 +68,12 @@ if sys.argv[1] == "-s":
 else:
 
     if len(sys.argv) > 4 or len(sys.argv) < 4:
-      sys.exit('Error: missing or additional arguments')
+      print('Error: missing or additional arguments')
+      sys.exit(1)
     if int(sys.argv[2]) < 1024 or int(sys.argv[2]) > 65535:
-      sys.exit('Error: port number must be in the range 1024 to 65535')
-        #Create server
+      print('Error: port number must be in the range 1024 to 65535')
+      sys.exit(1)        
+#Create server
         #ServerName = sys.argv[2]
     ServerName = sys.argv[1]
     ServerPort = int(sys.argv[2])
