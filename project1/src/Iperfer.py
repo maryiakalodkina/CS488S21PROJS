@@ -31,33 +31,36 @@ if sys.argv[1] == "-s":
     print('The server is ready to listen')
     #Creating connection socket
     #It is blocked and don't go to while-loop if no one connects
-    count = 0 #in KB
+    Scount = 0 #in Bytes
     #connection_socket, addr = serverSocket.accept()
-    
+    start_time2 = time.time()
     while 1:
       connection_socket, addr = serverSocket.accept()  #move to while-lo$
-      start_time2 = time.time()
+      #start_time2 = time.time()
 
         #Receiving message from client
       message = connection_socket.recv(1000)
-      count+=1000
+      Scount+=1000
       if message[0] == 69:
+        #connection_socket.close()
+        stop_time2 = time.time()-start_time2
+        connection_socket.close()
+        #print(stop_time2)
         break
-
-  #Sending the modified message
-      connection_socket.send(message)
-#      print("Reply sent", addr)
+      Scount+=1000
        
         #Closing communication with client
       connection_socket.close()
-#    serverSocket.close()
-    stop_time = time.time() - start_time2
-
-    megabit = count*0.000008
+   # print(stop_time2)
+    #stop_time2 = time.time() - start_time2
+    print('Count: {} and StopTime: {}'.format(Scount, stop_time2))
+    serverSocket.close()
+    megabit = Scount*0.000008
+    Scount = Scount/1000 #now it's in KB
     #print("count: {}".format(count))
-    rate = megabit/stop_time
+    rate = megabit/stop_time2
     #print("time_window: {}".format(time_window))
-    print('received = {} KB. rate = {} Mbps'.format(count, rate))
+    print('received = {} KB. rate = {} Mbps'.format(Scount, rate))
 
 else:
 
@@ -86,8 +89,9 @@ else:
     start_time = time.time()
     count = 0 #in KB
 
-    while (time.time() - start_time) < time_window:
-      
+    while (time.time()-start_time) <= time_window:
+#      print('Time: {}'.format(clientSocket.settimeout))
+ 
       size = 1000 
       message = bytearray(size)
 
@@ -106,6 +110,7 @@ else:
     clientSocket.send(messageEOF.encode('ascii'))
 
     clientSocket.close()   
+    print(count)
     megabit = count*0.000008
     count = count/1000
     rate = megabit/time_window
