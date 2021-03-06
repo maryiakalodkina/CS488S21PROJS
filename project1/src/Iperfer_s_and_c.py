@@ -45,7 +45,7 @@ if sys.argv[1] == "-s":
         start_time = time.time()
 
         #Receiving message from client
-        message = connection_socket.resv(1000)
+        message = connection_socket.recv(1000) 
 
         #Modifying the message
         modified_message = message.replace('0', '1')
