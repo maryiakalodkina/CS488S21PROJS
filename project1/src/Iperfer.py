@@ -33,15 +33,15 @@ if sys.argv[1] == "-s":
     #It is blocked and don't go to while-loop if no one connects
     count = 0 #in KB
     #connection_socket, addr = serverSocket.accept()
+    
     while 1:
       connection_socket, addr = serverSocket.accept()  #move to while-lo$
-      start_time = time.time()
+      start_time2 = time.time()
 
         #Receiving message from client
       message = connection_socket.recv(1000)
-      if message[0] == 0:
-        count+=1000
-      elif message[0] == 69:
+      count+=1000
+      if message[0] == 69:
         break
 
   #Sending the modified message
@@ -51,7 +51,7 @@ if sys.argv[1] == "-s":
         #Closing communication with client
       connection_socket.close()
 #    serverSocket.close()
-    stop_time = time.time() - start_time
+    stop_time = time.time() - start_time2
 
     megabit = count*0.000008
     #print("count: {}".format(count))
@@ -87,7 +87,8 @@ else:
     count = 0 #in KB
 
     while (time.time() - start_time) < time_window:
-      size = 1000
+      
+      size = 1000 
       message = bytearray(size)
 
       try:
@@ -98,7 +99,7 @@ else:
         clientSocket.connect(ServerAddress)
         clientSocket.sendall(message)
         count += 1000
-
+ 
     clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientSocket.connect(ServerAddress)
     messageEOF = 'E'
