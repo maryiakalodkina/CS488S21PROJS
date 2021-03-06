@@ -16,9 +16,11 @@ if sys.argv[1] == "-s":
 
     #python3 Iperfer.py -s <listen port>
     if len(sys.argv) > 3 or len(sys.argv) < 3:
-      sys.exit('Error: missing or additional arguments')
+      print('Error: missing or additional arguments')
+      sys.exit(1)
     if int(sys.argv[2]) < 1024 or int(sys.argv[2]) > 65535:
-      sys.exit('Error: port number must be in the range 1024 to 65535')
+      print('Error: port number must be in the range 1024 to 65535')
+      sys.exit(1)
 
     #Creating server
     ServerName = 'localhost'
@@ -46,12 +48,15 @@ if sys.argv[1] == "-s":
         #Receiving message from client
       message = connection_socket.recv(1000)
 
+      for value in message:
+        value = 1
+        
         #Modifying the message
-      modified_message = message.replace('0', '1')
+#      modified_message = message.replace('0', '1')
       count+=1000
 
   #Sending the modified message
-      modified_socket.send(modified_message)
+      connection_socket.send(message)
       print("Reply sent", addr)
 
         #Closing communication with client
