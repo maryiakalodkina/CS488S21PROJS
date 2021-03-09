@@ -19,34 +19,34 @@ if sys.argv[1] == "-s":
     ServerAddress = (ServerName, ServerPort)
 
     #Creating server socket
-    serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
 
     #Associating server port number with the socket
-    serverSocket.bind(ServerAddress)
+      serverSocket.bind(ServerAddress)
 
     #Waiting for some client to knock on the door
-    serverSocket.listen(1) #maximum number of queued connections (at lea$
+      serverSocket.listen(1) #maximum number of queued connections (at lea$
 
-    print('The server is ready to listen')
+      print('The server is ready to listen')
     #Creating connection socket
     #It is blocked and don't go to while-loop if no one connects
-    Serv_count = 0 #in Bytes
-    connection_socket, addr = serverSocket.accept()  #move to while-lo$
-    start_time2 = time.time()
+      Serv_count = 0 #in Bytes
+      connection_socket, addr = serverSocket.accept()  #move to while-lo$
+      start_time2 = time.time()
 
-    while 1:
+      while 1:
         #Receiving message from client
-      message = connection_socket.recv(1000)
-
+        message = connection_socket.recv(1000)
+        if connection_socket.recv(0):
+          break  
       #by sending ascii 69 ('E') we notify the Server that Client closed its socket
       #so the Server will also shut down      
-      if message[0] == 69:
-        #connection_socket.close()
-        stop_time2 = time.time()-start_time2
-        connection_socket.close()
-        break
-      Serv_count+=1000
-
+#      if message[0] == 69:
+ #       #connection_socket.close()
+  ##      stop_time2 = time.time()-start_time2
+    #    connection_socket.close()
+     #   break
+        Serv_count+=1000
 #    print('Count: {} and StopTime: {}'.format(Scount, stop_time2))
     serverSocket.close()
 
@@ -72,27 +72,26 @@ else:
 
     time_window = float(sys.argv[3]) #elapsed in seconds, [0] is prog na$
 
-    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    clientSocket.connect(ServerAddress)
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
+      clientSocket.connect(ServerAddress)
 
     #Create client socket
 
-    clientSocket.settimeout(time_window)
+      clientSocket.settimeout(time_window)
     #3-way handshake is performed => connection is established
 
-    start_time = time.time()
-    count = 0 #in B
+      start_time = time.time()
+      count = 0 #in B
 
-    while (time.time()-start_time) < time_window:
- 
-      size = 1000 
-      message = bytearray(size)
+      while (time.time()-start_time) < time_window:
+        size = 1000 
+        message = bytearray(size)
 
-      clientSocket.sendall(message)
-      count += 1000
+        clientSocket.sendall(message)
+        count += 1000
         
-    messageEOF = 'E'
-    clientSocket.send(messageEOF.encode('ascii'))
+  #  messageEOF = 'E'
+  #  clientSocket.send(messageEOF.encode('ascii'))
 
     megabit = count*0.000008
     count = count/1000
