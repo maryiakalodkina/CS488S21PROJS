@@ -37,7 +37,8 @@ if sys.argv[1] == "-s":
       while 1:
         #Receiving message from client
         message = connection_socket.recv(1000)
-        if connection_socket.recv(0):
+        if not message:
+          stop_time2 = time.time()-start_time2
           break  
       #by sending ascii 69 ('E') we notify the Server that Client closed its socket
       #so the Server will also shut down      
