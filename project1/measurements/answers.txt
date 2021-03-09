@@ -1,0 +1,12 @@
+ 
+ For Q2 we assume that the expected latency would be 177.519 ms as that is what 
+we get if we sum up L1 avg rtt (86.797 ms), L2 avg rtt (25.667 ms), 
+L3 avg rtt (65.056 ms).
+ Actual measured latency (avg RRT) is 172.309 ms. 
+
+ For Q2 we assume that the expected throughput would be the sum of 3 bandwidth
+of L1,L2 and L3 (11.1637 Mbps + 33.3079 Mbps + 24.7955 Mbps) divided by 3, which would 
+give us 23.0890 Mbps 
+ Actual measured throughput is 18.2243 Mbps. The actual throughtput is lower 
+than the expected throughput as it can be affected by many factors like 
+latency, transmission medium limitation, etc. 
