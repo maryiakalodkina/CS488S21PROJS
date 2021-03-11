@@ -14,7 +14,7 @@ if sys.argv[1] == "-s":
       sys.exit(1)
 
     #Creating server
-    ServerName = 'localhost'
+    ServerName = ''
     ServerPort = int(sys.argv[2])
     ServerAddress = (ServerName, ServerPort)
 
