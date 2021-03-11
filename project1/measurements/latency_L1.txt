@@ -23,3 +23,5 @@ PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 --- 10.0.0.2 ping statistics ---
 20 packets transmitted, 20 received, 0% packet loss, time 19059ms
 rtt min/avg/max/mdev = 82.931/86.797/91.265/2.087 ms
+
+Bandwidth = 11.1637 Mbps
