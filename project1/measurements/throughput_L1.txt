@@ -1,1 +1,1 @@
-sent = 47557.0 KB. rate = 19.022799999999997 Mbps
+sent = 52325.0 KB. rate = 20.93 Mbps
