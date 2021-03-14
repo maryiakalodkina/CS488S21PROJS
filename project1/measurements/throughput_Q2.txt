@@ -1,2 +1,0 @@
-The server is ready to listen
-received = 54829.0 KB. rate = 18.224306145559883 Mbps
