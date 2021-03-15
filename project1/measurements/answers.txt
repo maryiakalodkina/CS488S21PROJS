@@ -1,0 +1,107 @@
+h1-h2 = L1 | h2-h3 = L2 | h3-h4 = L3 | h5-h2 = L4 | h3-h6 = L5 
+
+Task 3
+
+Q2
+
+1) Latency - Expectation:
+For Q2 we assume that the expected latency would be 179.846 ms as that is what 
+we get if we sum up L1 avg rtt (86.318 ms), L2 avg rtt (26.238 ms) and 
+L3 avg rtt (67.290 ms).
+ 
+Actual measured latency (avg RRT) is 174.514 ms. 
+
+
+2) Throughput - Expectation:
+For Q2 we assume that the expected throughput would be the sum of 3 bandwidth
+of L1,L2 and L3 (20.93 Mbps + 31.462 Mbps + 28.582 Mbps) divided by 3, which would 
+give us 26.99 Mbps 
+ 
+Explanation: Actual measured throughput 20.528 Mbps is smaller than the expected 
+throughput as it can be affected by many factors like latency, transmission medium 
+limitation, etc. 
+
+
+Q3
+
+1) Latency - Expectation:
+ For Q3 we assume that the expected latency would double the actual 
+measured latency for L1+L2+L3 (174.514 ms) because we made two pairs of hosts 
+run on the same switched (thus, links) simultaneously. Thus, we expect to see something around 349.028 ms
+ 
+Similar way, the expected latency for 3 simultaneous pairs would be 
+ 174.514 ms * 3 = 523.542 ms 
+
+Actual measurements: 
+
+When running 2 pairs of hosts simultaneously:
+latency for h1-h4: 173.566 Mbps
+latency for h7-h8: 174.389 Mbps
+
+When running 3 pairs of hosts simultaneously:
+latency for h1-h4: 171.064 Mbps
+latency for h7-h8: 178.744 Mbps
+latency for h9-h10: 175.952 Mbps
+
+Explanation: The distance between 2 nodes is positively correlated to the latency. 
+Thus, the farther the nodes from each other, the higher latency we would expect. In this case 
+the nodes are remaining at the same distance, thus, the latency is not being affected. 
+
+2) Throughput - Expectation:
+For Q3 we assume that the throughput would be affected by the 
+simultaneous communication of 2 pairs and will be cut in half -> 
+approximately 9-11 Mbps.
+Similar, for simultaneous communication of 3 pairs, it would be cut in 1/3 ->
+approximately 6-8 Mbps.
+ 
+Actual measurements: 
+
+When running 2 pairs of hosts simultaneously:
+throughput for h1-h4: 10.9816 Mbps
+throughput for h7-h8: 6.9024 Mbps
+
+When running 3 pairs of hosts simultaneously:
+throughput for h1-h4: 4.944 Mbps
+throughput for h7-h8: 3.6568 Mbps 
+throughput for h9-h10: 4.3467 Mbps 
+
+Explanation: Three pairs of hosts have lower throughput than 2 pairs as more hosts are consuming finite 
+bandwidth of the connection. Therefore, each pair is allocated a smaller portion of the available bandwidth
+and experience a smaller data transfer.
+
+
+Q4
+
+1) Latency - expectation:
+For Q4 we assume that the latency would not be affected based on the
+previous examples. Thus, for h1-h4 the latency will remain approximately 
+174 ms, and for h5-h6 the latency would be 25.213 (L4) + 26.238 (L2) 
++ 27.978 (L5)= 79.429 ms.
+
+Actual measurements for h1-h4 (avg RTT): 172.142 ms
+Actual measurements for h5-h6 (avg RTT): 52.376 ms
+
+Explanation: The actual latency for h1-h4 and h5-h6 are approximately equal to the expected latency. 
+The big difference between h1-h4 and h5-h6 latency is attributable to L1 's and L3's bigger latency, 
+specifically 86.318 and 67.290 ms.
+
+
+2) Throughput - expectation:
+We assume that the throughput for h1-h4 will be about (L1(20.93 Mbps) + L3 (28.582 Mbps) +
+L2/2 (31.462 /2 Mbps)) /3 = ~21.748 Mbps as they share only one link with h5-h6. 
+
+And throughput for h5-h6 would be (L4(14.9612 Mbps) + L5 (25.786 Mbps) + L2/2 
+(31.462 / 2 = ~15.7 Mbps)) /3  = ~18/826 Mbps
+
+Actual measurements for h1-h4: 15.9306 Mbps
+Actual measurements for h5-h6: 22.6628 Mbps
+
+Explanation: Since the latency for the pair h1-h4 is so much bigger than h5-h6, 
+the actual throughput for the former pair is much smaller than the latter. Naturally, 
+throughput and latency are negatively correlated, since the longer it takes for data to be transmitted, 
+the smaller the data transfer rate will be. In other words, as the throughput increases, there will be 
+more packets to be put on the links, so a packet has to wait longer, increasing latency.
+
+
+
+
