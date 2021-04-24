@@ -12,7 +12,10 @@ def md5_chunk(chunk):
     Returns md5 checksum for chunk
     """
     m = hashlib.md5()
-    m.update(chunk)
+    m.update(chunk.encode('utf-8'))
+    print('------Inside md5_chunk()------')
+    print(m)
+    print(m.hexdigest())
     return m.hexdigest()
 
 
@@ -20,9 +23,10 @@ def adler32_chunk(chunk):
     """
     Returns adler32 checksum for chunk
     """
-    res = zlib.adler32(chunk).encode('UTF-8')
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    res = zlib.adler32(bytes(chunk, encoding='utf8')) #bytes() returns a bytes object, an object that cannot be modified & zlib.adler32 returns the unsigned 32-bit checksum integer
+    print('------Inside adler32_chunk()------')
     print(type(res))
+    print(res)
     return res
   # Checksum objects
 # ----------------
@@ -63,12 +67,17 @@ def checksums_file(fn):
     """
     Returns object with checksums of file
     """
+    print('------Inside checksums_file()------')
     chunks = Chunks()
+    print(chunks)
     with open(fn) as f:
         while True:
             chunk = f.read(BLOCK_SIZE)
+            print(chunk)
             if not chunk:
                 break
+
+            print('------Entering chunks.append()------')
 
             chunks.append(
                 Signature(
@@ -76,7 +85,7 @@ def checksums_file(fn):
                     md5=md5_chunk(chunk)
                 )
             )
-
+        print('------Exiting chunks.append()------')
         return chunks
 
 def _get_block_list(file_one, file_two):
@@ -94,11 +103,14 @@ def _get_block_list(file_one, file_two):
     3. start over at 2 until you're out of file to read
     """
     checksums = checksums_file(file_two)
+    print('------Inside _get_block_list()------')
+    print(checksums)
     blocks = []
     offset = 0
     with open(file_one) as f:
         while True:
             chunk = f.read(BLOCK_SIZE)
+            print(chunk)
             if not chunk:
                 break
 
@@ -127,10 +139,12 @@ def file(file_one, file_two):
     output. If it's not a chunk index, then it's actual data and should just be
     appended to output directly.
     """
-
+    print('----------Beginning of output----------')
     output = ''
     with open(file_two) as ft:
         for block in _get_block_list(file_one, file_two):
+            print('------Inside for loop in file()------')
+            print(block)
             if isinstance(block, int):
                 ft.seek(block * BLOCK_SIZE)
                 
