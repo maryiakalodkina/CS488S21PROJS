@@ -30,7 +30,7 @@ def adler32_chunk(chunk):
     return res
   # Checksum objects
 # ----------------
-Signature = collections.namedtuple('Signature', 'md5 adler32')
+Signature = collections.namedtuple('Signature', 'md5 adler32') #Declaring named tuple
 
 
 class Chunks(object):
@@ -77,7 +77,7 @@ def checksums_file(fn):
             if not chunk:
                 break
 
-            print('------Entering chunks.append()------')
+            print('------Entering chunks.append() call inside checksums_file()------')
 
             chunks.append(
                 Signature(
@@ -85,10 +85,11 @@ def checksums_file(fn):
                     md5=md5_chunk(chunk)
                 )
             )
-        print('------Exiting chunks.append()------')
+        print('------Exiting chunks.append() call inside checksums_file()------')
         return chunks
 
 def _get_block_list(file_one, file_two):
+    print('------Inside _get_block_list()------')
     """
     The good stuff.
 
@@ -102,8 +103,9 @@ def _get_block_list(file_one, file_two):
             ii. move the read head by 1 byte
     3. start over at 2 until you're out of file to read
     """
+    print('------Entering checksums_file() call inside _get_block_list()------')
     checksums = checksums_file(file_two)
-    print('------Inside _get_block_list()------')
+    print('------Exiting checksums_file() call inside _get_block_list()------')
     print(checksums)
     blocks = []
     offset = 0
@@ -145,7 +147,7 @@ def file(file_one, file_two):
         for block in _get_block_list(file_one, file_two):
             print('------Inside for loop in file()------')
             print(block)
-            if isinstance(block, int):
+            if isinstance(block, int): 
                 ft.seek(block * BLOCK_SIZE)
                 
                 output += ft.read(BLOCK_SIZE).decode('UTF-8')
