@@ -32,15 +32,6 @@
     32  CS488 final is going to be hard
     33  CS488 final is going to be hard
     34  CS488 final is going to be hard
-oing to be hard
-    27  CS488 final is going to be hard
-    28  CS488 final is going to be hard
-    29  CS488 final is going to be hard
-    30  CS488 final is going to be hard
-    31  CS488 final is going to be hard
-    32  CS488 final is going to be hard
-    33  CS488 final is going to be hard
-    34  CS488 final is going to be hard
     35  CS488 final is going to be hard
     36  CS488 final is going to be hard
     37  CS488 final is going to be hard
@@ -49,4 +40,3 @@ oing to be hard
     40  CS488 final is going to be hard
     41  CS488 final is going to be hard
     42  CS488 final is going to be hard
-

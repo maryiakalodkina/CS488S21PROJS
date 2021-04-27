@@ -123,8 +123,6 @@ def _get_block_list(file_one, file_two):
     print(checksums)
     blocks = []
     offset = 0
-    temp_offset = 0
-    count = 0
    
     with open(file_one) as f:
         while True:
@@ -148,8 +146,8 @@ def _get_block_list(file_one, file_two):
                 blocks.append(chunk[0])
                 f.seek(offset)
                 continue
-    print('printing blocks')
-    print(blocks)
+   # print('printing blocks')
+   # print(blocks)
     return blocks
 
 def file(file_one, file_two):
@@ -168,16 +166,22 @@ def file(file_one, file_two):
     print('----------Beginning of output----------')
     output = ''
     with open(file_two) as ft:
+        count=0
+        rem=0
         for block in _get_block_list(file_one, file_two):
 #            print('------Inside for loop in file()------')
  #           print(block)
             if isinstance(block, int): 
                 ft.seek(block * BLOCK_SIZE)
                 
-#                output += ft.read(BLOCK_SIZE)
-               # output += ft.read(BLOCK_SIZE).decode('UTF-8')
-
+                output += ft.read(BLOCK_SIZE)
+#                rem = block
+#                print(block)
+                
             else:
+#                if count is 0:
+#                    output += str(rem)
+#                    count=1
                 output += block
    # with open(file_two) as ft_output:
    #    ft_output.write(output)
