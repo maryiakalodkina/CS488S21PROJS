@@ -2,6 +2,8 @@ import collections
 import hashlib
 import zlib
 
+#Credits to: https://tylercipriani.com/blog/2017/07/09/the-rsync-algorithm-in-python/
+
 BLOCK_SIZE = 1024
 
 
@@ -86,6 +88,7 @@ def checksums_file(fn):
                 )
             )
         print('------Exiting chunks.append() call inside checksums_file()------')
+        print(chunks)
         return chunks
 
 def _get_block_list(file_one, file_two):
