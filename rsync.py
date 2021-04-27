@@ -2,9 +2,8 @@ import collections
 import hashlib
 import zlib
 
-#Credits to: https://tylercipriani.com/blog/2017/07/09/the-rsync-algorithm-in-python/
 
-BLOCK_SIZE = 1024
+BLOCK_SIZE = 4096
 
 
 # Helper functions
@@ -13,16 +12,8 @@ def md5_chunk(chunk):
     """
     Returns md5 checksum for chunk
     """
-    print('------Inside md5_chunk()------')
-
     m = hashlib.md5()
-#    m.update(chunk.encode('utf-8'))
-    enc_chunk = bytes(chunk, 'utf-8')
-    m.update(enc_chunk)
-   # print('printing chuck:')
-   # print(chunk)
-       
- #   print(m.hexdigest())
+    m.update(chunk)
     return m.hexdigest()
 
 
@@ -30,21 +21,11 @@ def adler32_chunk(chunk):
     """
     Returns adler32 checksum for chunk
     """
-    print('------Inside adler32_chunk()------')
-#    res = zlib.adler32(bytes(chunk, encoding='utf8')) #bytes() returns a bytes object, an object that cannot be modified & zlib.adler32 returns the unsigned 32-bit checksum integer
-#    print('printing chunk:')
-#    print(chunk)
-    enc_chunk = bytes(chunk, 'utf-8')
-#    print('printing encoded chunk')
-#    print(enc_chunk)
-    res = zlib.adler32(enc_chunk)
-#    print(type(chunk))
-#    print(type(enc_chunk))
-   # print(res)
-    return res
-  # Checksum objects
+    return zlib.adler32(chunk)
+
+# Checksum objects
 # ----------------
-Signature = collections.namedtuple('Signature', 'md5 adler32') #Declaring named tuple
+Signature = collections.namedtuple('Signature', 'md5 adler32')
 
 
 class Chunks(object):
@@ -81,17 +62,12 @@ def checksums_file(fn):
     """
     Returns object with checksums of file
     """
-    print('------Inside checksums_file()C------')
     chunks = Chunks()
-    print(chunks)
     with open(fn) as f:
         while True:
             chunk = f.read(BLOCK_SIZE)
-  #          print(chunk)
             if not chunk:
                 break
-
-            print('------Entering chunks.append() call inside checksums_file()------')
 
             chunks.append(
                 Signature(
@@ -99,14 +75,10 @@ def checksums_file(fn):
                     md5=md5_chunk(chunk)
                 )
             )
-            print('HERE HERE HERE HERE')
-            
 
-        print('------Exiting chunks.append() call inside checksums_file()------')
         return chunks
 
 def _get_block_list(file_one, file_two):
-    print('------Inside _get_block_list()------')
     """
     The good stuff.
 
@@ -120,28 +92,18 @@ def _get_block_list(file_one, file_two):
             ii. move the read head by 1 byte
     3. start over at 2 until you're out of file to read
     """
-    print('------Entering checksums_file() call inside _get_block_list()------')
     checksums = checksums_file(file_two)
-    print('------Exiting checksums_file() call inside _get_block_list()------')
-#    print('HERE HERE HERE HERE')
-    print(checksums)
     blocks = []
     offset = 0
-   
     with open(file_one) as f:
         while True:
             chunk = f.read(BLOCK_SIZE)
-            print('In file_one (new) reading 1024 bytes chunk')
-            print(chunk)
             if not chunk:
-                print('End of file_one')                 
                 break
-            print('Using NEW file, entering get_chunk()')
-            chunk_number = checksums.get_chunk(chunk)
-            print('Using NEW file, exiting get_chunk()')
 
-            if chunk_number is not None: #checksum of chunk in NEW file matches
-                #checksum of OLD file
+            chunk_number = checksums.get_chunk(chunk)
+
+            if chunk_number is not None:
                 offset += BLOCK_SIZE
                 blocks.append(chunk_number)
                 continue
@@ -150,14 +112,11 @@ def _get_block_list(file_one, file_two):
                 blocks.append(chunk[0])
                 f.seek(offset)
                 continue
-   # print('printing blocks')
-   # print(blocks)
+
     return blocks
 
 def file(file_one, file_two):
     """
-    !!! File-two is OLD; File-one  is NEW
-
     Essentially this returns file one, but in a fancy way :)
 
     The output from get_block_list is a list of either chunk indexes or data as
@@ -167,29 +126,17 @@ def file(file_one, file_two):
     output. If it's not a chunk index, then it's actual data and should just be
     appended to output directly.
     """
-    print('----------Beginning of output----------')
     output = ''
     with open(file_two) as ft:
-        count=0
-        rem=0
         for block in _get_block_list(file_one, file_two):
-#            print('------Inside for loop in file()------')
- #           print(block)
-            if isinstance(block, int): 
+            if isinstance(block, int):
                 ft.seek(block * BLOCK_SIZE)
-                
                 output += ft.read(BLOCK_SIZE)
-#                rem = block
-#                print(block)
-                
             else:
-#                if count is 0:
-#                    output += str(rem)
-#                    count=1
                 output += block
-   # with open(file_two) as ft_output:
-   #    ft_output.write(output)
-    return output 
-   # return output
+
+    return output
 
 
+#if __name__ == '__main__':
+file('foo.txt', 'bar.txt')
