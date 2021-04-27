@@ -1,4 +1,6 @@
 import rsync
 
 if __name__ == '__main__':
-    rsync.file('foo.txt', 'bar.txt')
+   output = rsync.file('HUGE_FILE_new.txt', 'HUGE_FILE_old.txt')
+with open('HUGE_FILE_old.txt', 'a') as ft:
+   ft.write(output)
